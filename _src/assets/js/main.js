@@ -12,11 +12,22 @@ const getValue = event => {
 
 function createCards(data) {
   for (const pokemon of data) {
-    console.log(pokemon.image);
+    const listItem = document.createElement('li');
+    listItem.classList.add('list__item');
+    const imageFront = document.createElement('img');
+    imageFront.src = pokemon.image;
+    imageFront.classList.add('image__front');
+    const imageBack = document.createElement('img');
+    imageBack.src = 'assets/images/back.png';
+    imageBack.classList.add('image__back');
+    resultsList.appendChild(listItem);
+    listItem.appendChild(imageFront);
+    listItem.appendChild(imageBack);
   }
 }
 
 const startGame = () => {
+  resultsList.innerHTML = '';
   fetch(fullUrl)
     .then(response => response.json())
     .then(data => {
