@@ -5,9 +5,24 @@ const button = document.querySelector('.button');
 const radioButtons = document.querySelectorAll('.radio__button');
 let fullUrl;
 const resultsList = document.querySelector('.results__list');
-const getValue = event => {
-  fullUrl = `${url}${event.currentTarget.value}.json`;
+let numberOfCards =  getNumberOfCardsFromLocalStorage();
+const radioFour = document.getElementById('four');
+const radioSix = document.getElementById('six');
+const radioEight = document.getElementById('eight');
+
+function getNumberOfCardsFromLocalStorage() {
+  let savedNumberOfCards = localStorage.getItem('savedValue');
+  if (savedNumberOfCards) {
+    return parseInt(savedNumberOfCards);
+  } else {
+    return 4;
+  }
 }
+
+const getValue = event => {
+  numberOfCards = event.currentTarget.value;
+  localStorage.setItem('savedValue', event.currentTarget.value);
+};
 
 function createCards(data) {
   for (const pokemon of data) {
@@ -28,21 +43,31 @@ function createCards(data) {
 function turnCard(event) {
   event.currentTarget.firstChild.classList.toggle('hidden');
   event.currentTarget.lastChild.classList.toggle('hidden');
-
 }
-
-
 
 const startGame = () => {
   resultsList.innerHTML = '';
+  fullUrl = `${url}${numberOfCards}.json`;
   fetch(fullUrl)
     .then(response => response.json())
     .then(data => {
       createCards(data);
     });
+};
+
+function fakeClick(input) {
+  input.click();
 }
 
-
+if (numberOfCards === null) {
+  fakeClick(radioFour);
+}else if (numberOfCards === 6) {
+  fakeClick(radioSix);
+}else if (numberOfCards === 8) {
+  fakeClick(radioEight);
+}else {
+  fakeClick(radioFour);
+}
 
 for (const radioButton of radioButtons) {
   radioButton.addEventListener('click', getValue);
