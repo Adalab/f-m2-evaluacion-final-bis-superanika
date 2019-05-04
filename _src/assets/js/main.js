@@ -25,12 +25,16 @@ const getValue = event => {
 };
 
 function createCards(data) {
+  let i = 1;
   for (const pokemon of data) {
     const listItem = document.createElement('li');
     listItem.classList.add('list__item');
     const imageFront = document.createElement('img');
     imageFront.src = pokemon.image;
-    imageFront.classList.add('image__front', 'image', 'hidden');
+    imageFront.classList.add('image__front','image', 'hidden');
+    imageFront.setAttribute('data-name', pokemon.name);
+    imageFront.id = i;
+    i++;
     const imageBack = document.createElement('img');
     imageBack.src = 'assets/images/back.png';
     imageBack.classList.add('image__back', 'image');
@@ -40,9 +44,52 @@ function createCards(data) {
     listItem.addEventListener('click', turnCard);
   }
 }
+let pairsOfCards = [];
+
 function turnCard(event) {
-  event.currentTarget.firstChild.classList.toggle('hidden');
-  event.currentTarget.lastChild.classList.toggle('hidden');
+  const frontCard = event.currentTarget.firstChild;
+  const backCard = event.currentTarget.lastChild;
+  let visible;
+  if (!(frontCard.classList.contains('pair'))) {
+    if (frontCard.classList.contains('hidden')){
+      frontCard.classList.remove('hidden');
+      backCard.classList.add('hidden');
+      visible = true;
+    }else {
+      frontCard.classList.add('hidden');
+      backCard.classList.remove('hidden');
+      visible = false;
+    }
+  }
+
+  if (visible) {
+    if (pairsOfCards.length === 1) {
+      if (pairsOfCards[0].id !== frontCard.id) {
+        pairsOfCards.push(frontCard);
+      }
+    }else {
+      pairsOfCards.push(frontCard);
+    }
+    if (pairsOfCards.length === 2) {
+      if (pairsOfCards[0].dataset.name === pairsOfCards[1].dataset.name) {
+        for (const card of pairsOfCards) {
+          card.classList.add('pair');
+        }
+        pairsOfCards = [];
+      }else {
+        const cardsToHide = [...pairsOfCards];
+        setTimeout(() => {
+          for (const card of cardsToHide){
+            card.classList.add('hidden');
+            card.nextSibling.classList.remove('hidden');
+          }
+        }, 1000);
+        pairsOfCards = [];
+      }
+    }
+  } else {
+    pairsOfCards = [];
+  }
 }
 
 const startGame = () => {
