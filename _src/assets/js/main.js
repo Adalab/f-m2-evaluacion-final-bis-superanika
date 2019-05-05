@@ -140,6 +140,7 @@ function shuffle(arra1) {
 
 const startGame = () => {
   resultsList.innerHTML = '';
+  message.innerHTML = '';
   cardsFound = 0;
   fullUrl = `${url}${numberOfCards}.json`;
   fetch(fullUrl)
