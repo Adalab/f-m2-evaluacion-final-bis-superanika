@@ -3,13 +3,30 @@
     
     <head>
         <meta charset="UTF-8">
-        <title>Adalab Web Starter Kit</title>
+        <title>Parejas de Pokemons</title>
         <link rel="icon" href="favicon.png" />
         <link rel="stylesheet" href="assets/css/main.css">
     </head>
     
     <body>
-        <div class="page"></div>
+        <div class="page">
+             <h1 class="title"><img class="title__image" src="https://i.imgur.com/DngVaR6.png" border="0"></h1>
+
+            <div class="game__options">
+                <label for="four" class="label">
+                    <input type="radio" value="4" class="radio__button" id="four" name="grid__size">4</label>
+                <label for="six" class="label">
+                    <input type="radio" value="6" class="radio__button" id="six" name="grid__size">6</label>
+                <label for="eight" class="label">
+                    <input type="radio" value="8" class="radio__button" id="eight" name="grid__size">8</label>
+                <button class="button">
+                    <img class="logo" src="assets/images/pokemon_go_logo.png" alt="start button">
+                </button>
+            </div>
+            <div class="results">
+                <ul class="results__list"></ul>
+            </div>
+        </div>
         <script src="assets/js/main.js"></script>
     </body>
 

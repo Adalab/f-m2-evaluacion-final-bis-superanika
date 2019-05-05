@@ -43,7 +43,17 @@ function createCards(data) {
     listItem.appendChild(imageBack);
     listItem.addEventListener('click', turnCard);
   }
+  orderCards(data);
 }
+
+function orderCards (data) {
+  if (data.length === 6) {
+    resultsList.classList.add('six__cards');
+  }else {
+    resultsList.classList.remove('six__cards');
+  }
+}
+
 let pairsOfCards = [];
 
 function turnCard(event) {
@@ -108,12 +118,16 @@ function fakeClick(input) {
 
 if (numberOfCards === null) {
   fakeClick(radioFour);
+  resultsList.classList.remove('six__cards');
 }else if (numberOfCards === 6) {
   fakeClick(radioSix);
+  resultsList.classList.add('six__cards');
 }else if (numberOfCards === 8) {
   fakeClick(radioEight);
+  resultsList.classList.remove('six__cards');
 }else {
   fakeClick(radioFour);
+  resultsList.classList.remove('six__cards');
 }
 
 for (const radioButton of radioButtons) {
