@@ -9,6 +9,9 @@ let numberOfCards =  getNumberOfCardsFromLocalStorage();
 const radioFour = document.getElementById('four');
 const radioSix = document.getElementById('six');
 const radioEight = document.getElementById('eight');
+const message = document.querySelector('.message');
+let cardsFound = 0;
+
 
 function getNumberOfCardsFromLocalStorage() {
   let savedNumberOfCards = localStorage.getItem('savedValue');
@@ -56,6 +59,10 @@ function orderCards (data) {
 
 let pairsOfCards = [];
 
+const removeMessage = () => {
+  message.innerHTML = '';
+};
+
 function turnCard(event) {
   const frontCard = event.currentTarget.firstChild;
   const backCard = event.currentTarget.lastChild;
@@ -86,6 +93,14 @@ function turnCard(event) {
           card.classList.add('pair');
         }
         pairsOfCards = [];
+        cardsFound += 2;
+        if (cardsFound < numberOfCards) {
+          message.innerHTML = '¡Has encontrado pareja!';
+          setTimeout(removeMessage, 2000);
+        }else {
+          message.innerHTML = '¡Enhorabuena, has ganado!';
+          setTimeout(removeMessage, 2000);
+        }
       }else {
         const cardsToHide = [...pairsOfCards];
         setTimeout(() => {
@@ -104,6 +119,7 @@ function turnCard(event) {
 
 const startGame = () => {
   resultsList.innerHTML = '';
+  cardsFound = 0;
   fullUrl = `${url}${numberOfCards}.json`;
   fetch(fullUrl)
     .then(response => response.json())
