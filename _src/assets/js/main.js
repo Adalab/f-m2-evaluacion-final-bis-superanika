@@ -1,5 +1,6 @@
 'use strict';
 
+
 const url = 'https://raw.githubusercontent.com/Adalab/cards-data/master/';
 const button = document.querySelector('.button');
 const radioButtons = document.querySelectorAll('.radio__button');
@@ -11,7 +12,47 @@ const radioSix = document.getElementById('six');
 const radioEight = document.getElementById('eight');
 const message = document.querySelector('.message');
 let cardsFound = 0;
+const timer = document.querySelector('.timer');
+let minutesLabel = document.getElementById('minutes');
+let secondsLabel = document.getElementById('seconds');
+let totalSeconds = 0;
+let startTimer;
+let pairsOfCards = [];
 
+
+function setTime() {
+  timer.classList.remove('hidden');
+  ++totalSeconds;
+  secondsLabel.innerHTML = pad(totalSeconds % 60);
+  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+}
+
+function pad(val) {
+  let valString = val + '';
+  if (valString.length < 2) {
+    return '0' + valString;
+  } else {
+    return valString;
+  }
+}
+
+function fakeClick(input) {
+  input.click();
+}
+
+if (numberOfCards === null) {
+  fakeClick(radioFour);
+  resultsList.classList.remove('six__cards');
+}else if (numberOfCards === 6) {
+  fakeClick(radioSix);
+  resultsList.classList.add('six__cards');
+}else if (numberOfCards === 8) {
+  fakeClick(radioEight);
+  resultsList.classList.remove('six__cards');
+}else {
+  fakeClick(radioFour);
+  resultsList.classList.remove('six__cards');
+}
 
 function getNumberOfCardsFromLocalStorage() {
   let savedNumberOfCards = localStorage.getItem('savedValue');
@@ -57,8 +98,6 @@ function orderCards (data) {
   }
 }
 
-let pairsOfCards = [];
-
 const removeMessage = () => {
   message.innerHTML = '';
 };
@@ -99,7 +138,7 @@ function turnCard(event) {
           setTimeout(removeMessage, 2000);
         }else {
           message.innerHTML = '¡Enhorabuena, has ganado!';
-          setTimeout(removeMessage, 2000);
+          clearInterval(startTimer);
         }
       }else {
         const cardsToHide = [...pairsOfCards];
@@ -121,7 +160,6 @@ function shuffle(arra1) {
   let ctr = arra1.length;
   let temp;
   let index;
-
   // While there are elements in the array
   while (ctr > 0) {
     // Pick a random index
@@ -136,9 +174,16 @@ function shuffle(arra1) {
   return arra1;
 }
 
-
+function goTimer() {
+  totalSeconds = 0;
+  if (startTimer) {
+    clearInterval(startTimer);
+  }
+  startTimer = setInterval(setTime, 1000);
+}
 
 const startGame = () => {
+  goTimer();
   resultsList.innerHTML = '';
   message.innerHTML = '';
   cardsFound = 0;
@@ -150,24 +195,6 @@ const startGame = () => {
       createCards(data);
     });
 };
-
-function fakeClick(input) {
-  input.click();
-}
-
-if (numberOfCards === null) {
-  fakeClick(radioFour);
-  resultsList.classList.remove('six__cards');
-}else if (numberOfCards === 6) {
-  fakeClick(radioSix);
-  resultsList.classList.add('six__cards');
-}else if (numberOfCards === 8) {
-  fakeClick(radioEight);
-  resultsList.classList.remove('six__cards');
-}else {
-  fakeClick(radioFour);
-  resultsList.classList.remove('six__cards');
-}
 
 for (const radioButton of radioButtons) {
   radioButton.addEventListener('click', getValue);

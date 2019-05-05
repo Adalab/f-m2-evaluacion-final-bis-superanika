@@ -28,10 +28,12 @@ body {
   font-size: 16px;
 }
 .label {
+  color: darkblue;
+  font-weight: bold;
   padding: 0 5px;
 }
 .button {
-  width: 65px;
+  width: 85px;
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -41,6 +43,25 @@ body {
 }
 .logo {
   width: 85px;
+}
+.timer {
+  font-size: 14px;
+  font-weight: bold;
+  color: darkblue;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  position: absolute;
+  top: 20px;
+  right: 150px;
+}
+
+#minutes {
+  margin-left: 5px;
+  font-size: 20px;
+}
+#seconds {
+  font-size: 20px;
 }
 .message__container {
   height: 50px;
